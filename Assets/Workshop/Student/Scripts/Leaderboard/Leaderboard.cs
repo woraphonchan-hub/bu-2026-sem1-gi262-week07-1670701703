@@ -11,7 +11,7 @@ namespace Searching
         private List<PlayerScore> scores = new List<PlayerScore>();
         public GameObject UIScore;
         public Transform UiParent;
-        void Awake()
+void Awake()
         {
             // Add 20 initial scores in unsorted order
             RecordScore(new PlayerScore("Alice", 100));
@@ -29,20 +29,43 @@ namespace Searching
             RecordScore(new PlayerScore("Kevin", 275));
             RecordScore(new PlayerScore("Nina", 350));
             RecordScore(new PlayerScore("Mona", 325));
-            
+
+            ShowleaderBoard();
         }
 
-        public void RecordScore(PlayerScore score)
+public void RecordScore(PlayerScore score)
         {
             // [1] sequential search if the player is already in the list
-
-           
+            foreach (PlayerScore s in scores)
+            {
+                if (s.playerName == score.playerName)
+                {
+                    return;
+                }
+            }
             // [2] find index to insert that make the scores list sorted with binary search
-            
+            int left = 0;
+            int right = scores.Count - 1;
+            int index = 0;
+
+            while (left <= right)
+            {
+                int mid = (left + right) / 2;
+
+                if (scores[mid].score < score.score)
+                {
+                    left = mid + 1;
+                }
+                else
+                {
+                    right = mid - 1;
+                }
+            }
+
+            index = left;
 
             // [3] If the score is not found, insert it at the appropriate index
-           
-
+            scores.Insert(index, score);
         }
 
         public void PrintScores()
